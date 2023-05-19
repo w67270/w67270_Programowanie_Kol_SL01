@@ -1,13 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zadanie 2 i 3</title>
   <style>
     .error {
-      color: red;
+      color: rgb(255, 0, 0);
+    }
+
+    .light {
+      width: 60px;
+      height: 60px;
+      margin: 10px auto;
+      border: 1px solid black;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
+    <div class="light" id="red"></div>
+    <div class="light" id="yellow"></div>
+    <div class="light" id="green"></div>
+
   <form id="registration-form" onsubmit="validateForm(event)">
     <div>
       <label for="login">Login:</label>
@@ -48,6 +64,23 @@
   </form>
 
   <script>
+    //zadanie 2
+    var lights = document.getElementsByClassName("light");
+    for (var i = 0; i < lights.length; i++) {
+      lights[i].addEventListener("click", changeColor);
+      lights[i].style.backgroundColor = lights[i].id;
+    }
+
+    function changeColor() {
+      for (var i = 0; i < lights.length; i++) {
+        if (lights[i] === this) {
+          lights[i].style.backgroundColor = this.id;
+        } else {
+          lights[i].style.backgroundColor = "white";
+        }
+      }
+    }
+    //zadanie 3
     function validateForm(event) {
       event.preventDefault();
 
@@ -125,12 +158,7 @@
       if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < selectedDate.getDate())) {
         age--;
       }
-
-      if (age < 18) {
-        return false;
-      }
-
-      return true;
+      return age >= 18;
     }
 
     function showError(elementId, errorMessage) {
