@@ -1,2 +1,5 @@
 link do repozytorium:
 https://github.com/w67270/w67270_Programowanie_Kol_SL01.git
+
+polecenie 2:
+Polecenie "git push" służy do wysyłania lokalnych zmian w repozytorium Git na zdalne repozytorium.

@@ -1,0 +1,4 @@
+
+Polecenie "git status" jest używane w systemie kontroli wersji Git do wyświetlania informacji o bieżącym stanie repozytorium.
+Przez wykonanie tego polecenia, Git pokaże informacje o zmienionych plikach, plikach do dodania do indeksu, a także o plikach, które nie są jeszcze śledzone przez Git.
+Podsumowując, "git status" dostarcza informacje o stanie repozytorium i pomaga w śledzeniu zmian w kodzie.
