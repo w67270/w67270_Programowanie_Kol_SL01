@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <form id="registration-form" onsubmit="validateForm(event)">
+    <div>
+      <label for="login">Login:</label>
+      <input type="text" id="login" name="login" minlength="3" required>
+      <span id="login-error" class="error"></span>
+    </div>
+    <div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+      <span id="email-error" class="error"></span>
+    </div>
+    <div>
+      <label for="password">Hasło:</label>
+      <input type="password" id="password" name="password" required>
+      <span id="password-error" class="error"></span>
+    </div>
+    <div>
+      <label for="confirm-password">Powtórz hasło:</label>
+      <input type="password" id="confirm-password" name="confirm-password" required>
+      <span id="confirm-password-error" class="error"></span>
+    </div>
+    <div>
+      <input type="checkbox" id="phone-checkbox" onchange="togglePhoneField()"> Pokaż pole telefon
+    </div>
+    <div id="phone-field" style="display: none;">
+      <label for="phone">Telefon:</label>
+      <input type="tel" id="phone" name="phone" pattern="[0-9]*">
+      <span id="phone-error" class="error"></span>
+    </div>
+    <div>
+      <label for="birthdate">Data urodzenia:</label>
+      <input type="date" id="birthdate" name="birthdate" required>
+      <span id="birthdate-error" class="error"></span>
+    </div>
+    <div>
+      <input type="submit" value="Zarejestruj">
+    </div>
+  </form>
+
+  <script>
+    function validateForm(event) {
+      event.preventDefault();
+
+      clearErrors();
+
+      const login = document.getElementById('login').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      const birthdate = document.getElementById('birthdate').value;
+
+      let isValid = true;
+
+      if (login.length < 3) {
+        isValid = false;
+        showError('login-error', 'Login musi mieć co najmniej 3 znaki.');
+      }
+
+      if (!validateEmail(email)) {
+        isValid = false;
+        showError('email-error', 'Wprowadź poprawny adres email.');
+      }
+
+      if (!validatePassword(password)) {
+        isValid = false;
+        showError('password-error', 'Hasło powinno mieć co najmniej 8 znaków i zawierać przynajmniej jedną wielką literę, jedną małą literę oraz cyfrę.');
+      }
+
+      if (password !== confirmPassword) {
+        isValid = false;
+        showError('confirm-password-error', 'Hasła nie są identyczne.');
+      }
+
+      if (document.getElementById('phone-checkbox').checked) {
+        const phone = document.getElementById('phone').value;
+        if (!phone) {
+          isValid = false;
+          showError('phone-error', 'Pole telefon jest wymagane.');
+        } else if (!validatePhone(phone)) {
+          isValid = false;
+          showError('phone-error', 'Pole telefon może zawierać tylko cyfry.');
+        }
+      }
+
+      if (!validateBirthdate(birthdate)) {
+        isValid = false;
+        showError('birthdate-error', 'Musisz mieć co najmniej 18 lat.');
+      }
+
+      if (isValid) {
+        document.getElementById('registration-form').submit();
+      }
+    }
+
+    function validateEmail(email) {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailPattern.test(email);
+    }
+
+    function validatePassword(password) {
+      const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+      return passwordPattern.test(password);
+    }
+
+    function validatePhone(phone) {
+      const phonePattern = /^[0-9]*$/;
+      return phonePattern.test(phone);
+    }
+
+    function validateBirthdate(birthdate) {
+      const today = new Date();
+      const selectedDate = new Date(birthdate);
+      const age = today.getFullYear() - selectedDate.getFullYear();
+      const monthDiff = today.getMonth() - selectedDate.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < selectedDate.getDate())) {
+        age--;
+      }
+
+      if (age < 18) {
+        return false;
+      }
+
+      return true;
+    }
+
+    function showError(elementId, errorMessage) {
+      const errorElement = document.getElementById(elementId);
+      errorElement.textContent = errorMessage;
+    }
+
+    function clearErrors() {
+      const errorElements = document.getElementsByClassName('error');
+      Array.from(errorElements).forEach(element => {
+        element.textContent = '';
+      });
+    }
+
+    function togglePhoneField() {
+      const phoneField = document.getElementById('phone-field');
+      const phoneCheckbox = document.getElementById('phone-checkbox');
+      phoneField.style.display = phoneCheckbox.checked ? 'block' : 'none';
+    }
+  </script>
+</body>
+</html>
